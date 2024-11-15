@@ -1,7 +1,9 @@
 "use client";
 
+import { useYouTubePlayer } from "@/context/YouTubePlayerContext";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { CgPlayButtonO } from "react-icons/cg";
 
 interface MusicItem {
   ranking: string;
@@ -9,6 +11,7 @@ interface MusicItem {
   artist: string;
   album: string;
   image: string;
+  youtubeID: string;
 }
 
 const platforms = [
@@ -22,6 +25,7 @@ const platforms = [
 ];
 
 export default function KoreaPage() {
+  const { videoId, setVideoId } = useYouTubePlayer();
   const [data, setData] = useState<MusicItem[]>([]);
   const [platform, setPlatform] = useState("apple");
   const [loading, setLoading] = useState(true);
@@ -52,6 +56,10 @@ export default function KoreaPage() {
 
   const handlePlatformClick = (selectedPlatform: string) => {
     setPlatform(selectedPlatform);
+  };
+
+  const handleMusicItemClick = (youtubeID: string) => {
+    setVideoId(youtubeID);
   };
 
   return (
@@ -98,10 +106,25 @@ export default function KoreaPage() {
             data.map((item, index) => (
               <li
                 key={index}
-                className="flex items-center border-b border-dashed text-[#6E6E6E] text-sm hover:bg-slate-200 cursor-pointer"
+                onClick={() => handleMusicItemClick(item.youtubeID)}
+                className={`relative flex items-center border-b border-dashed text-[#6E6E6E] text-sm ${
+                  item.youtubeID
+                    ? "cursor-pointer hover:bg-slate-100"
+                    : "pointer-events-none"
+                } ${
+                  videoId === item.youtubeID
+                    ? "bg-blue-50 font-bold text-gray-800"
+                    : ""
+                }`}
               >
-                <span className="px-4">{item.ranking}</span>.
-                <span className="px-4 text-gray-900">{item.title}</span>.
+                <span className="px-4">
+                  {videoId === item.youtubeID ? (
+                    <CgPlayButtonO size={20} />
+                  ) : (
+                    item.ranking
+                  )}
+                </span>
+                .<span className="px-4 text-gray-900">{item.title}</span>.
                 <span className="px-4 text-[12px]">{item.artist}</span>.
                 <span className="px-4 text-[12px]">{item.album}</span>
                 <Image
@@ -109,8 +132,15 @@ export default function KoreaPage() {
                   height={48}
                   src={item.image || "/defaultImage.png"}
                   alt={item.title}
-                  className="w-12 h-12 ml-auto"
+                  className={`w-12 h-12 ml-auto ${
+                    item.youtubeID ? "opacity-100" : "opacity-0"
+                  }`}
                 />
+                {item.youtubeID && (
+                  <span className="absolute right-1 text-white bottom-1 z-10">
+                    <CgPlayButtonO />
+                  </span>
+                )}
               </li>
             ))
           ) : (

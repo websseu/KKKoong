@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { YouTubePlayerProvider } from "@/context/YouTubePlayerContext";
+import YouTubePlayer from "@/components/youtubePlayer";
 
 export const metadata: Metadata = {
   title: "KKoong - Global Music Rankings",
@@ -35,7 +37,7 @@ export const metadata: Metadata = {
     description:
       "Discover the latest global music rankings and popular tracks at a glance with KKoongJJang.",
     site: "@KKoongJJang",
-    images: ["https://www.kkoongjjang.com/image.jpg"],
+    images: ["https://www.kkoong.com/image.jpg"],
   },
 };
 
@@ -47,9 +49,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <YouTubePlayerProvider>
+          <Header />
+          {children}
+          <Footer />
+          <YouTubePlayer />
+        </YouTubePlayerProvider>
       </body>
     </html>
   );
