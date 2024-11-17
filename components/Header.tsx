@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { GiMoebiusStar, GiAwareness } from "react-icons/gi";
 import { usePathname } from "next/navigation";
+import { MdStars } from "react-icons/md";
 
 const menuItems = [
   { href: "/", label: "Home" },
@@ -28,9 +29,11 @@ export default function Header() {
         <div className="poppins">
           <Link
             href={"/"}
-            className="text-8xl font-black uppercase bg-[#f8f7f1] px-4"
+            className="star text-8xl font-black uppercase bg-[#f8f7f1] px-4 flex"
           >
-            KKKoong
+            <span>KKK</span>
+            <MdStars />
+            <span>ng</span>
           </Link>
         </div>
         <div className="bg-main w-9 h-9 rounded-full flex items-center justify-center ring ring-gray-300/20 hover:bg-pink-50 bg-[#f8f7f1]">
